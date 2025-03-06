@@ -42,8 +42,7 @@ export const SignUp=asyncWrapper(async(req,res,next)=>
     const otpExpirationDate= new Date().getTime()+(60*1000*5);
     //Recording the user to the database
     const newUser= new UserModel({
-        Firstname:req.body.Firstname,
-        Lastname:req.body.Lastname,
+        Name:req.body.Name,
         email:req.body.email,
         password:hashedPassword,
         role:req.body.role,
@@ -81,21 +80,28 @@ export const Validateopt=asyncWrapper(async(req,res,next)=>
     const FounderUser=await UserModel.findOne({otp:req.body.otp})
     if(!FounderUser)
     {
-        next(new UnauthorizedError('Authorization denied'));
+       return next(new UnauthorizedError('Authorization denied'));
     };
     // checking if otp is expired or not
     if(FounderUser.otp.expires < new Date().getTime())
     {
-        next(new UnauthorizedError('OTP expired'));
+      return  next(new UnauthorizedError('OTP expired'));
     }
     // Update the user to 
     FounderUser.verified = true;
     const savedUser = await FounderUser.save();
+     // Generate a new token
+     const newToken = jwt.sign(
+        { email: savedUser.email, role: savedUser.role },
+        process.env.JWT_SECRET_KEY,
+        { expiresIn: "1h" }
+    );
     if(savedUser)
     {
         return res.status(200).json({
             message:"User account verified!",
-            user:savedUser
+            user:savedUser,
+            newToken
         })
     }
 

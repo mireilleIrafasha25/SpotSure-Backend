@@ -2,16 +2,10 @@ import mongoose from "mongoose";
 const schema=mongoose.Schema
 
 const userSchema=new schema({
-    Firstname:{
+    Name:{
         type:String,
         required:false,
-        message:["Please enter your first name"]
-        
-    },
-    Lastname:{
-        type:String,
-        required:false,
-            message:["Please enter your last name"]},
+            message:["Please enter your Name"]},
     email:{
         type:String,
         required:true,

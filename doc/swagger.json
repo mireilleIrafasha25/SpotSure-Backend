@@ -1,8 +1,8 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "BOTIGA E-COMMERCE",
-    "description": "This API Specification for the E-Commerce website",
+    "title": "SPOTSURE",
+    "description": "This API Specification for Parking Reservation",
     "contact": {
       "email": "mireilleirafasha@gmail.com"
     },
@@ -13,13 +13,13 @@
     "version": "1.0.0"
   },
   "externalDocs": {
-    "url": "https://github.com/mireilleIrafasha25/Shop_Backend.git",
+    "url": "https://github.com/mireilleIrafasha25/SpotSure-Backend.git",
     "description": "Find more info here"
   },
-  "basePath": "/Botiga",
+  "basePath": "/SpotSure",
   "servers": [
     {
-      "url": "http://localhost:5000",
+      "url": "http://localhost:4000",
       "description": "Local server"
     },
     {
@@ -33,8 +33,8 @@
   ],
   "tags": [
     {
-      "name": "Botiga Project",
-      "description": "Operation pretaining to E-commerce"
+      "name": "SpotSure",
+      "description": "Operation pretaining to Parking Reservation"
     }
   ],
   "paths": {
@@ -356,155 +356,7 @@
         }
   }
 },
-       
-    "/product/addProduct": {
-      "post": {
-        "tags": [
-          "Products"
-        ],
-        "summary": "Add a new product",
-        "description": "add a new product with  the provided details",
-        "parameters": [
-          {
-            "name": "category",
-            "in": "formData",
-            "required": true,
-            "type":"string"
-            
-          },
-          {
-            "name": "name",
-            "in": "formData",
-            "required": true,
-            "type":"string"
-            
-          },
-          {
-            "name": "image",
-            "in": "formData",
-            "required": true,
-            "type":"file"
-           
-          },
-          {
-            "name": "description",
-            "in": "formData",
-            "required": true,
-            "type":"string"
-           
-          },
-          {
-            "name": "rating",
-            "in": "formData",
-            "required": true,
-            "type":"number"
-           
-          },
-          {
-            "name": "colors",
-            "in": "formData",
-            "required": true,
-            "type":"string"
-           
-          },
-          {
-            "name": "Min_price",
-            "in": "formData",
-            "required": true,
-            "type":"number"
-           
-          },
-          {
-            "name":"Max_price",
-            "in": "formData",
-            "required": true,
-            "type":"number"
-          }
-          
-        ],
-       
-        "responses": {
-          "200": {
-            "description": "Service added successfully"
-           
-          },
-          "401": {
-            "description": "Bad request -Validation error"
-            
-          }
-        }
-      }
-    },   
-    "/product/getProducts":{
-      "get":{
-        "tags":["Products"],
-        "summary":"Get all products",
-        "description":"Get all products",
-        "responses":{
-          "200":{
-            "description":"All products",
-            "content":{
-              "application/json":{
-                "schema":{
-                  "type":"array",
-                  "items":{
-                    "$ref":"#/components/schemas/Product"
-                  }
-                }
-              }
-            }
-          }  
-        }
-      }
-    }, 
-    "/product/updateProduct/{productId}":{
-      "put":{
-        "tags":["Products"],
-        "summary":"Update a product",
-        "description":"Update a product",
-        "parameters":[
-          {
-            "name":"productId",
-            "in":"path",
-            "required":true,
-            "type":"string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/Product"
-            }
-          }
-        ],
-        "requestBody":{
-         "content": {
-                        "application/json": {
-                          "schema": {
-                            "$ref": "#/components/schemas/Product"
-                          }
-                        }
-                      }
-        },
-              "responses":{
-          "200": {
-            "description": "Product updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Product"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Product not found"
-          }
-        }
-      }
-    },
-             "/contact/add":{
+          "/contact/add":{
                 "post":{
                   "tags":["Contact Us"],
                   "summary":"Add a contact",

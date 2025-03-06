@@ -13,6 +13,10 @@ const contactSchema = new schema({
     message1:{
         type:String,
         required:true,
+    },
+   phone:{
+      type:String,
+      required:true,  
     }
 });
 const ContactModel=mongoose.model("Contact",contactSchema);

@@ -18,20 +18,33 @@ const corsOptions = {
 
 // Load Swagger JSON asynchronously
 async function loadDocumentation() {
-  return JSON.parse(
-    await fs.readFile(new URL("./doc/swagger.json", import.meta.url), "utf-8")
-  );
+  try {
+    const data = await fs.readFile(new URL("./doc/swagger.json", import.meta.url), "utf-8");
+    // console.log("Swagger file loaded successfully!"); // Debugging log
+    return JSON.parse(data);
+  } catch (error) {
+    // console.error("Error loading Swagger JSON:", error);
+    return null; // Prevents app crash
+  }
 }
 
+
 const app = express();
-app.use(cors());
-app.use(express.json());
+
+app.use(cors(corsOptions)); // Ensure CORS is configured properly
+app.use(express.json()); // Ensure JSON parsing is enabled
+
 
 // Use an async function to start the server
 async function startServer() {
   try {
     const documentation = await loadDocumentation();
-    app.use("/api_docs", swaggerUi.serve, swaggerUi.setup(documentation));
+if (documentation) {
+  app.use("/api_docs", swaggerUi.serve, swaggerUi.setup(documentation));
+} else {
+  console.error("Swagger documentation could not be loaded.");
+}
+
 
     await mongoose.connect(`${process.env.db}`, {
       useNewUrlParser: true,
@@ -48,6 +61,8 @@ app.use((req, res, next) => {
     console.log("Connected to DB");
 
     app.use("/SpotSure", router);
+    
+
     app.listen(process.env.PORT, () => {
       console.log(`Server is running on port ${process.env.PORT}`);
     });
