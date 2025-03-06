@@ -1,48 +1,46 @@
 import ParkingModel from "../model/ParkingModel.js";
+import BookingModel from "../model/BookingModel.js";
 import { BadRequestError } from "../error/BadRequestError.js";
 import { NotFoundError } from "../error/notfoundError.js";
 
-// Create a new parking lot
 export const createParkingLot = async (req, res, next) => {
-  try {
-    const { name, nameofBuilding, location, numberOfSpaces, availableSpaces, parkingSizes, nearbyBuildings, images, pricePerHour } = req.body;
-
-    const newParkingLot = new ParkingModel({
-      name,
-      nameofBuilding,
-      location,
-      numberOfSpaces,
-      availableSpaces,
-      parkingSizes,
-      nearbyBuildings,
-      images,
-      pricePerHour
-    });
-
-    const savedParkingLot = await newParkingLot.save();
-    res.status(201).json({ message: "Parking lot created successfully", data: savedParkingLot });
-  } catch (error) {
-    next(new BadRequestError("Failed to create parking lot"));
-  }
-};
+    try {
+      const newParkingLot = new ParkingModel(req.body);
+      const savedParkingLot = await newParkingLot.save();
+      res.status(201).json({ message: "Parking lot created successfully", data: savedParkingLot });
+    } catch (error) {
+      console.error("Error while creating parking lot:", error);
+      res.status(400).json({ message: "Failed to create parking lot", error: error.message });
+    }
+  };
+  
 
 
 
 // Find parking lots near a building
 export const findParkingNearBuilding = async (req, res, next) => {
-  try {
-    const { buildingName } = req.params;
-
-    // Find parking lots that mention the building in their nearby buildings
-    const parkingLots = await ParkingModel.find({ nearbyBuildings: { $in: [buildingName] } });
-
-    if (parkingLots.length === 0) {
-      return next(new NotFoundError("No parking found near this building"));
+    try {
+      const { destinationName } = req.body;
+  
+      if (!destinationName) {
+        return next(new BadRequestError("Destination name is required"));
+      }
+  
+      // Find parking lots that have the given building name in their nearbyBuildings array
+      const parkingLots = await ParkingModel.find({ nearbyBuildings: { $in: [destinationName] } });
+  
+      if (!parkingLots || parkingLots.length === 0) {
+        return next(new NotFoundError("No parking found near this building"));
+      }
+  
+      res.status(200).json({
+        message: "Parking lots found",
+        data: parkingLots,
+      });
+    } catch (error) {
+      console.error("Error while finding parking:", error);
+      next(new BadRequestError("Error finding parking lots"));
     }
-
-    res.status(200).json(parkingLots);
-  } catch (error) {
-    next(new NotFoundError("Error finding parking lots"));
-  }
-};
+  };
+  
 
