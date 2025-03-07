@@ -133,7 +133,7 @@ export const SignIn=asyncWrapper(async(req,res,next)=>
         return next(new BadRequestError('Invalid Password'))
     }
     //Generate token
-    const token = jwt.sign({id:FoundUser.id,email:FoundUser.email,Firstname:FoundUser.Firstname,Lastname:FoundUser.Lastname,role: FoundUser.role },process.env.JWT_SECRET_KEY, {expiresIn:'1h'});
+    const token = jwt.sign({id:FoundUser.id,email:FoundUser.email,Name:FoundUser.Name,role: FoundUser.role },process.env.JWT_SECRET_KEY, {expiresIn:'1h'});
 
     res.status(200).json({
         message:"Login successful",
