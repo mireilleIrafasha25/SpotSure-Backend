@@ -11,7 +11,7 @@ const parkingLotSchema = new Schema({
     required: true
   },
   location: {
-    address: { type: String, required: true }
+   type: String, required: true 
   },
   numberOfSpaces: {
     type: Number,
@@ -21,12 +21,8 @@ const parkingLotSchema = new Schema({
     type: Number,
     required: true
   },
-  parkingSizes: [
-    {
-      size: { type: String, enum: ['small', 'medium', 'large'], required: true },
-      capacity: { type: Number, required: true }
-    }
-  ],
+  parkingSizes: {type: Number, required: true }
+  ,
   nearbyBuildings: [
     { type: String, required: true } // Array of building names
   ],
