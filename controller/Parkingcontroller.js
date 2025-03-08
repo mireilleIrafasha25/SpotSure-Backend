@@ -21,13 +21,13 @@ export const createParkingLot = async (req, res, next) => {
       if(!result || !result.url){
         return res.status(400).json({ error: "Failed to upload image" });
       }
-
+      const nearbyBuildings = JSON.parse(req.body.nearbyBuildings);
       const newParkingLot = new ParkingModel(
         {
           name:req.body.name,
           nameofBuilding:req.body.nameofBuilding,
           location:req.body.location,
-          nearbyBuildings:[req.body.nearbyBuildings],
+          nearbyBuildings,
           pricePerHour:req.body.pricePerHour,
           availableSpaces:req.body.availableSpaces,
           numberOfSpaces:req.body.numberOfSpaces,
@@ -58,7 +58,7 @@ export const findParkingNearBuilding = async (req, res, next) => {
   
       // Find parking lots that have the given building name in their nearbyBuildings array
       const parkingLots = await ParkingModel.find({ nearbyBuildings: { $in: [destinationName] } });
-  
+
       if (!parkingLots || parkingLots.length === 0) {
         return next(new NotFoundError("No parking found near this building"));
       }
