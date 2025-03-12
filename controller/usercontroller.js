@@ -56,7 +56,7 @@ export const SignUp=asyncWrapper(async(req,res,next)=>
       }
       
     const savedUser= await newUser.save();
-    const token = jwt.sign({id:savedUser.id,role:savedUser.role },process.env.JWT_SECRET_KEY, {expiresIn:'1h'});
+    const token = jwt.sign({id:savedUser.id,role:savedUser.role,email:savedUser.email},process.env.JWT_SECRET_KEY, {expiresIn:'1h'});
     // console.log(savedUser);
  await sendEmail(req.body.email,"Verify your account",`Your OTP is ${otp}`)
  if(savedUser)

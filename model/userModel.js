@@ -22,11 +22,11 @@ const userSchema=new schema({
     role:{
         
         enum:{
-            values:["user", "admin"],
-            message:'Role must be user or admin.'
+            values:["carOwner", "parkingOwner","admin"],
+            message:'Role must be carOwner or parkingOwner.'
         },
         type:String,
-        default: "user"
+        default: "carOwner"
     },
     otp:{
         type:Number,
@@ -41,7 +41,17 @@ const userSchema=new schema({
         required:true,
         default:false
     }
-})
+});
+userSchema.pre("save", async function (next) {
+    if (this.role === "admin" && this.isNew) {  // ✅ Only check when creating a NEW admin
+        const existingAdmin = await mongoose.model("User").findOne({ role: "admin" });
+        if (existingAdmin) {
+            const error = new Error("An admin already exists. You cannot create another one.");
+            return next(error);
+        }
+    }
+    next();
+});
 
 const UserModel=mongoose.model("User",userSchema);
 

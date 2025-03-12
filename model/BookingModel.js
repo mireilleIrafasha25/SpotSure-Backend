@@ -12,9 +12,9 @@ const bookingSchema = new Schema({
     ref: 'ParkingLot', // Reference to the Parking Lot booked
     required: true 
   },
-  parkingSpotId: { 
-    type: String, 
-    required: true // This will store the spot number or unique identifier
+  plateNumber:{
+    type: String,
+    required: true
   },
   bookingDate: {
     type: Date,
@@ -32,6 +32,11 @@ const bookingSchema = new Schema({
     type: String,
     enum: ['pending', 'confirmed', 'cancelled'],
     default: 'pending'
+  },
+  PaymentStatus:{
+    type: String,
+    enum: ['paid', 'unpaid'],
+    default: 'paid'
   }
 }, {
   timestamps: true
