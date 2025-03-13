@@ -12,12 +12,17 @@ const bookingSchema = new Schema({
     ref: 'ParkingLot', // Reference to the Parking Lot booked
     required: true 
   },
+  username: {
+    type: String, // Tubika izina ry'umukoresha
+    required: true,
+},
   plateNumber:{
     type: String,
     required: true
   },
   bookingDate: {
     type: Date,
+    default:Date.now,
     required: true
   },
   bookingDuration: {
