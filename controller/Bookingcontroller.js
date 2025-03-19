@@ -47,3 +47,20 @@ export const createBooking = async (req, res, next) => {
         next(new BadRequestError("Failed to create booking"));
     }
 };
+export const getBookingById=async(req,res,next)=>
+{
+
+    const {id}=req.params;
+    try{
+    const foundBooking=await BookingModel.findById(id);
+    if(!foundBooking)
+    {
+        res.status(404).json("Booking not found")
+    }
+    return  res.status(200).json({
+        data:foundBooking
+    })}
+    catch(error){
+     return res.status(500).json({error: error.message});
+    }
+}
