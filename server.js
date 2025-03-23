@@ -15,7 +15,6 @@ const corsOptions = {
   methods: ["GET", "POST", "PUT", "UPDATE", "DELETE"],
   origin: ["http://localhost:5173", "https://spot-sure-pr.vercel.app"], // Allow frontend
 };
-
 // Load Swagger JSON asynchronously
 async function loadDocumentation() {
   try {
