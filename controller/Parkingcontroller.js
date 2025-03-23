@@ -73,4 +73,17 @@ export const findParkingNearBuilding = async (req, res, next) => {
     }
   };
   
+  export const ListAllParking=async(req,res,next)=>
+  {
+    try{
+const AllParking=await ParkingModel.find()
+return res.status(200).json({
+  data:AllParking,
+  message: "AllParking found",
+})}
+catch(error)
+{
+  res.status(500).json({ error: error.message });
+}
+  }
 
