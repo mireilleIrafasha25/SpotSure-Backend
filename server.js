@@ -13,7 +13,7 @@ dotenv.config();
 const corsOptions = {
   allowedHeaders: ["Authorization", "Content-Type"],
   methods: ["GET", "POST", "PUT", "UPDATE", "DELETE"],
-  origin: "*",
+  origin: ["http://localhost:5173", "https://spot-sure-pr.vercel.app"], // Allow frontend
 };
 
 // Load Swagger JSON asynchronously
