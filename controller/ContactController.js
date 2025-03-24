@@ -23,7 +23,7 @@ export const findbyUser= asyncWrapper(async (req, res, next) => {
         const foundContact = await contactModel.findById(req.params.id);
         if(!foundContact)
             {
-                return next(new NotFoundError(`Message not found`))
+                res.status(404).json(`Message not found`)
             }
         return res.status(200).json({foundContact});
         next();
@@ -35,7 +35,7 @@ export const updateContact = asyncWrapper(async (req, res, next) => {
         const foundContact = await contactModel.findbyIdAndUpdate(Contactowner,req.body,{new:true});
         if(!foundContact)
             {
-                return next(new NotFoundError(`Message not found`))
+                res.status(404).json(`Message not found`)
             }
         return res.status(200).json({foundContact});
         next();
