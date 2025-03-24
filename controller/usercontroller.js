@@ -3,7 +3,7 @@ import asyncWrapper from "../middleware/async.js";
 import { otpGenerator } from "../utils/otp.js";
 import {UnauthorizedError} from '../error/Unauthorized.js'
 import {BadRequestError} from "../error/index.js";
-import { NotFoundError } from "../error/notfoundError.js";
+import { NotFoundError } from "../error/NotFoundError.js";
 import {validationResult} from 'express-validator';
 import {sendEmail} from '../utils/sendEmail.js';
 import bcryptjs from 'bcryptjs';

@@ -1,4 +1,4 @@
-import { NotFoundError } from "../error/notfoundError.js";
+import { NotFoundError } from "../error/NotFoundError.js";
 import { BadRequestError } from "../error/BadRequestError.js";
 import BookingModel from "../model/BookingModel.js";
 import ParkingModel from "../model/ParkingModel.js";

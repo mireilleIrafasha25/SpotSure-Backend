@@ -1,3 +1,3 @@
 export * from './BadRequestError.js';
-export * from './notfoundError.js';
+export * from './NotFoundError.js';
 export * from "./forbiddenError.js"
