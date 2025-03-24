@@ -1,6 +1,5 @@
 import ParkingModel from "../model/ParkingModel.js";
 import { BadRequestError } from "../error/BadRequestError.js";
-import { NotFoundError } from "../error/NotFoundError.js";
 import cloudinary from "../utils/cloudinary.js";
 import path from "path";
 import fs from "fs";  // Import fs to remove local files after upload
@@ -78,7 +77,7 @@ export const findParkingNearBuilding = async (req, res, next) => {
     });
 
     if (!parkingLots || parkingLots.length === 0) {
-      return next(new NotFoundError("No parking found near this building"));
+      res.status(404).json({message:"No parking found near this building"});
     }
 
     res.status(200).json({

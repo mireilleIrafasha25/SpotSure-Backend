@@ -1,4 +1,3 @@
-import { NotFoundError } from "../error/NotFoundError.js";
 import { BadRequestError } from "../error/BadRequestError.js";
 import BookingModel from "../model/BookingModel.js";
 import ParkingModel from "../model/ParkingModel.js";
@@ -18,7 +17,7 @@ export const createBooking = async (req, res, next) => {
         
         const parkingLot = await ParkingModel.findById(parkingid);
         if (!parkingLot) {
-            return next(new NotFoundError("Parking lot not found"));
+            res.status(404).json({message:"Parking lot not found"});
         }
 
     
