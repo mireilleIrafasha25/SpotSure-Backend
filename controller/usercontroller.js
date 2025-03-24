@@ -3,7 +3,6 @@ import asyncWrapper from "../middleware/async.js";
 import { otpGenerator } from "../utils/otp.js";
 import {UnauthorizedError} from '../error/Unauthorized.js'
 import {BadRequestError} from "../error/index.js";
-import { NotFoundError } from "../error/NotFoundError.js";
 import {validationResult} from 'express-validator';
 import {sendEmail} from '../utils/sendEmail.js';
 import bcryptjs from 'bcryptjs';
@@ -263,10 +262,10 @@ export const ResetPassword = asyncWrapper(async (req, res, next) => {
         );
 
         if (!updatedUser) {
-            return next(new NotFoundError('User not found'));
+            return res.status(404).json({message:'User not found'});
         }
 
-        res.status(200).json({
+        return res.status(200).json({
             message: "User updated successfully",
             user: updatedUser
         });
@@ -282,10 +281,10 @@ export const deleteUser = asyncWrapper(async (req, res, next) => {
     const deletedUser = await UserModel.findByIdAndDelete(id);
 
     if (!deletedUser) {
-        return next(new NotFoundError('User not found'));
+        return res.status(404).json({message:'User not found'});
     }
 
-    res.status(200).json({
+   return res.status(200).json({
         message: "User deleted successfully"
     });
 });
@@ -300,7 +299,7 @@ export const findUserByName = asyncWrapper(async (req, res, next) => {
     });
 
     if (!users.length) {
-        return next(new NotFoundError('No user found with that name'));
+        res.status(404).json({message:'No user found with that name'});
     }
 
     res.status(200).json({
