@@ -2,7 +2,8 @@ import UserModel from "../model/userModel.js";
 import asyncWrapper from "../middleware/async.js";
 import { otpGenerator } from "../utils/otp.js";
 import {UnauthorizedError} from '../error/Unauthorized.js'
-import {BadRequestError,NotFoundError} from "../error/index.js";
+import {BadRequestError} from "../error/index.js";
+import { NotFoundError } from "../error/notfoundError.js";
 import {validationResult} from 'express-validator';
 import {sendEmail} from '../utils/sendEmail.js';
 import bcryptjs from 'bcryptjs';
@@ -251,7 +252,7 @@ export const ResetPassword = asyncWrapper(async (req, res, next) => {
     }
    });
    export const updateUser = asyncWrapper(async (req, res, next) => {
-    const { id } = req.params; // Change from email to id
+    const { id } = req.params.id; // Change from email to id
     const updatedData = req.body;
 
     try {
