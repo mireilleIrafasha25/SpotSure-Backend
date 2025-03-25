@@ -2,7 +2,7 @@ import { BadRequestError } from "../error/BadRequestError.js";
 import BookingModel from "../model/BookingModel.js";
 import ParkingModel from "../model/ParkingModel.js";
 import UserModel from "../model/userModel.js";
-
+import mongoose from "mongoose";
 export const createBooking = async (req, res, next) => {
     try {
         const { bookingDuration, parkingid,plateNumber } = req.body;
@@ -95,4 +95,40 @@ export const getTodayBookings = async (req, res, next) => {
         console.error("Error fetching today's bookings:", error);
         return res.status(500).json({ error: "Failed to fetch today's bookings" });
     }
+}
+
+export const getTodayBookingsForParking = async (req, res) => {
+  try {
+    let { parkingLotId } = req.query; // Get parking ID from query parameters
+
+    if (!parkingLotId) {
+      return res.status(400).json({ message: "ParkingLot ID is required" });
+    }
+
+    parkingLotId = parkingLotId.trim(); // Remove any extra spaces or newlines
+
+    // Check if parkingLotId is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(parkingLotId)) {
+      return res.status(400).json({ message: "Invalid ParkingLot ID" });
+    }
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Start of the day
+
+    const tomorrow = new Date();
+    tomorrow.setHours(23, 59, 59, 999); // End of the day
+
+    const bookings = await BookingModel.find({
+      parkingLot: new mongoose.Types.ObjectId(parkingLotId), // Convert to ObjectId
+      bookingDate: { $gte: today, $lt: tomorrow }, // Filter bookings for today
+      status: "pending", // Only show confirmed bookings
+    })
+      .populate("user", "Name")
+      .populate("parkingLot", "name");
+
+    res.status(200).json({ size: bookings.length, data: bookings });
+  } catch (error) {
+    console.error("Error fetching today's bookings:", error);
+    res.status(500).json({ message: "Server error" });
+  }
 };
