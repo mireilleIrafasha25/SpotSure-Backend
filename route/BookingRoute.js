@@ -3,7 +3,6 @@ import { createBooking,getBookingById,ListBookings,getTodayBookings} from "../co
 import {authorize,authenticateToken} from "../middleware/authethicateToken.js"
 
 const router = express.Router();
-
 router.post("/newBooking", authenticateToken,authorize("carOwner"),createBooking);
 router.get("/getBooking/:id",getBookingById)
 router.get("/listBooking",authenticateToken,authorize("parkingOwner"),ListBookings)
