@@ -63,3 +63,36 @@ export const getBookingById=async(req,res,next)=>
      return res.status(500).json({error: error.message});
     }
 }
+export const ListBookings = async(req, res, next)=>
+{
+    try{
+    const allBookings=await BookingModel.find();
+    return  res.status(200).json({
+        size:allBookings.length,
+        data:allBookings
+    })}
+    catch(error){
+     return res.status(500).json({error: error.message});
+    }
+}
+
+export const getTodayBookings = async (req, res, next) => {
+    try {
+        // Get today's date in YYYY-MM-DD format
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        // Get bookings where the date matches today
+        const todayBookings = await BookingModel.find({
+            bookingDate: { $gte: today }
+        }).populate('user', 'Name').populate('parkingLot', 'name pricePerHour');
+
+        return res.status(200).json({
+            size: todayBookings.length,
+            data: todayBookings
+        });
+    } catch (error) {
+        console.error("Error fetching today's bookings:", error);
+        return res.status(500).json({ error: "Failed to fetch today's bookings" });
+    }
+};
