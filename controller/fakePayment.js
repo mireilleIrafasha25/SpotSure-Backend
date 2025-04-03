@@ -37,6 +37,12 @@ export const FakePayment=async (req, res) => {
 
 // Get all fake payments
 export const GetAllPayment=async(req, res) => {
-    res.json(payments);
+    const foundPayment = await FakeModel.find();
+    res.status(200).json({ 
+        size: foundPayment.length,  // Number of payments
+        message:"All Payment are here",
+        payment: foundPayment
+     });
+
 };
 
