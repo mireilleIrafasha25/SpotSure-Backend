@@ -19,7 +19,7 @@ export const createBooking = async (req, res, next) => {
         if (!parkingLot) {
             res.status(404).json({message:"Parking lot not found"});
         }
-
+    
     
         const totalPrice = parkingLot.pricePerHour * bookingDuration;
 
@@ -29,13 +29,14 @@ export const createBooking = async (req, res, next) => {
             plateNumber,
             user: userId, 
             username: user.Name, 
-            parkingLot: parkingid 
+            parkingLot: parkingid,
+            ParkingName:parkingLot.name,
         });
 
-        // 5. Bika booking muri database
+        
         const savedBooking = await newBooking.save();
 
-        // 6. Twohereze response
+       
         res.status(201).json({
             message: `You have booked at ${parkingLot.name} for ${bookingDuration} hours.`,
             data: savedBooking
@@ -62,6 +63,23 @@ export const getBookingById=async(req,res,next)=>
     catch(error){
      return res.status(500).json({error: error.message});
     }
+}
+export const getBookingbyUser=async(req,res)=>{
+  const user=req.params.user;
+  const foundUserBooking= await BookingModel.findOne({user});
+  if(!foundUserBooking)
+  {
+    res.status(404).json({
+        message:"User ID not found"
+    })
+  }
+  res.status(200).json(
+    {
+        message:"Booking by User retrieved successfully",
+        data:foundUserBooking
+    }
+  )
+
 }
 export const ListBookings = async(req, res, next)=>
 {

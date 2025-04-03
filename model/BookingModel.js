@@ -12,6 +12,10 @@ const bookingSchema = new Schema({
     ref: 'ParkingLot', // Reference to the Parking Lot booked
     required: true 
   },
+  ParkingName:{
+    type: String, // Name of the parking lot
+    required: true,
+  },
   username: {
     type: String, // Tubika izina ry'umukoresha
     required: true,
