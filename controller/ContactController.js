@@ -18,8 +18,16 @@ export const AddNewPortifolioContact=asyncWrapper(async (req, res, next) => {
     if (!errors.isEmpty()) {
         return next(new BadRequestError(errors.array()[0].msg));
     };
-    const newContact = await contactModel.create(req.body)
-    return res.status(201).json({message:"Message received successfully",Contact:newContact});
+    const newContact = new PortifolioContactModel(
+        {
+            name:req.body.name,
+            email:req.body.email,
+            subject:req.body.subject,
+            message1:req.body.message1,
+            phone:req.body.phone
+        })
+    const savedContact=await newContact.save();
+    return res.status(201).json({message:"Message received successfully",Contact:savedContact});
 });
 export const ListContact = asyncWrapper(async (req, res, next) => {
         const foundContact = await contactModel.find();
