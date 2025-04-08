@@ -1,4 +1,5 @@
 import contactModel from "../model/contactModel.js";
+import PortifolioContactModel from "../model/PortifolioContactModel.js";
 import asyncWrapper from "../middleware/async.js";
 import {UnauthorizedError,BadRequestError} from "../error/index.js";
 import { validationResult } from "express-validator";
@@ -12,7 +13,14 @@ export const addNewContact = asyncWrapper(async (req, res, next) => {
     const newContact = await contactModel.create(req.body)
     return res.status(201).json({message:"Message received successfully",Contact:newContact});
 });
-
+export const AddNewPortifolioContact=asyncWrapper(async (req, res, next) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        return next(new BadRequestError(errors.array()[0].msg));
+    };
+    const newContact = await contactModel.create(req.body)
+    return res.status(201).json({message:"Message received successfully",Contact:newContact});
+});
 export const ListContact = asyncWrapper(async (req, res, next) => {
         const foundContact = await contactModel.find();
         return res.status(200).json({foundContact});
